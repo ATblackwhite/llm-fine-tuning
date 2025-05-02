@@ -1,0 +1,57 @@
+# 下载的模型的路径
+model_name_or_path: ./Qwen3-4B
+
+# sft表示使用监督微调
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: all
+# LoRA秩参数，常用8-64之间，任务复杂或数据集大可提高秩。
+lora_rank: 16
+
+# 训练数据的存储路径
+dataset_dir: ./data
+# 训练数据的文件名
+dataset: train_data
+# 训练模板
+template: qwen3
+# 模型上下文大小
+cutoff_len: 2048
+# 最大样本数
+max_samples: 10000
+overwrite_cache: true
+# 预处理工作线程数
+preprocessing_num_workers: 32
+
+# 微调模型输出路径
+output_dir: ./Qwen3-4B-translation-lora
+# 每隔 10 步记录一次训练指标
+logging_steps: 10
+# 每隔 500 步保存一次模型
+save_steps: 500
+# 绘制损失曲线
+plot_loss: true
+# 允许覆盖已有内容
+overwrite_output_dir: true
+
+# 每个GPU处理的样本数
+per_device_train_batch_size: 2
+# 累计8步的梯度后再更新参数
+gradient_accumulation_steps: 4
+# 初始学习率
+learning_rate: 1.0e-4
+# 数据集迭代次数，小数据集或复杂任务可增加轮数
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+# 使用bfloat16精度 CUDA设备支持
+bf16: true
+ddp_timeout: 180000000
+
+# 从数据集中分出 10% 用于验证
+val_size: 0.1
+# 评估时的每个 GPU 批次大小
+per_device_eval_batch_size: 1
+eval_strategy: steps
+# 每 500 步评估一次
+eval_steps: 500

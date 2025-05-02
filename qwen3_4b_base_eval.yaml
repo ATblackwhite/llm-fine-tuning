@@ -1,0 +1,24 @@
+# 模型路径
+model_name_or_path: /home/admin/workspace/Qwen3-4B-Base
+
+stage: sft
+# 预测阶段
+do_predict: true
+finetuning_type: lora
+
+# 数据路径
+dataset_dir: /home/admin/workspace/gitlab.alibaba-inc.com/chenkai.wsb/fine-tuning/data
+# 测试集
+eval_dataset: test_data
+template: qwen3
+cutoff_len: 2048
+max_samples: 10000
+overwrite_cache: true
+preprocessing_num_workers: 32
+
+# 测试集导出地址
+output_dir: /home/admin/workspace/Qwen3-4B-Base_eval
+overwrite_output_dir: true
+
+per_device_eval_batch_size: 32
+predict_with_generate: true
