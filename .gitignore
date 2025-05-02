@@ -1,6 +1,9 @@
 venv
 .idea
-data
+*csv
+/data/lunyu
+/data/shiji
+/data/zhongyong
 __pycache__
 *.pyc
 *.swp

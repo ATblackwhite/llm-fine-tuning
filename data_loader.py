@@ -4,7 +4,7 @@ import data_CCTC
 import data_FIRE
 
 
-def write_transformed_file(data, output_file_name="train_data.json"):
+def write_transformed_file(data, output_file_name="data/train_data.json"):
     with open(output_file_name, 'w', encoding='utf-8') as outfile:
         json.dump(data, outfile, ensure_ascii=False, indent=4)
 
@@ -25,9 +25,9 @@ if __name__ == '__main__':
     train_set = cctc[:train_size]
     test_set = cctc[train_size:]
 
-    write_transformed_file(cctc, "total_data.json")
-    write_transformed_file(train_set, "train_data.json")
-    write_transformed_file(test_set, "test_data.json")
+    write_transformed_file(cctc, "data/total_data.json")
+    write_transformed_file(train_set, "data/train_data.json")
+    write_transformed_file(test_set, "data/test_data.json")
 
     print(total_length)
     print("Training set size:", len(train_set))
