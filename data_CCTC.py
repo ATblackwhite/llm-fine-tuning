@@ -1,5 +1,6 @@
 import os
 import json
+import random
 
 
 def transform_json_content(contents):
@@ -7,21 +8,21 @@ def transform_json_content(contents):
 
     for content in contents:
         transformed_item = {
-            "instruction": "将下面的文言文翻译成现代文",
-            "input": content["source"],
+            "instruction": "翻译下面的文言文和现代文，如果是文言文，则翻译成现代文，如果是现代文，则翻译成文言文",
+            "input": "将下面句子翻译成白话文：\n" + content["source"],
             "output": content["target"],
             "system": "你是一名精通古汉语和文言文的专家"
         }
         reversed_transformed_item = {
-            "instruction": "将下面的现代文翻译成文言文",
-            "input": content["target"],
+            "instruction": "翻译下面的文言文和现代文，如果是文言文，则翻译成现代文，如果是现代文，则翻译成文言文",
+            "input": "将下面句子翻译成文言文：\n" + content["target"],
             "output": content["source"],
             "system": "你是一名精通古汉语和文言文的专家"
         }
 
         transformed_contents.append(transformed_item)
         transformed_contents.append(reversed_transformed_item)
-
+    random.shuffle(transformed_contents)
     return transformed_contents
 
 
