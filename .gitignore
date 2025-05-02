@@ -1,3 +1,12 @@
 venv
 .idea
 data
+__pycache__
+*.pyc
+*.swp
+*.log
+*.ipynb
+*.py.class
+.DS_Store
+.ipynb_checkpoints
+.ipynb_checkpoints/

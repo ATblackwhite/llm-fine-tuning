@@ -1,4 +1,5 @@
 import json
+import random
 import data_CCTC
 import data_FIRE
 
@@ -16,5 +17,19 @@ if __name__ == '__main__':
     fire = data_FIRE.process_fire_file(fire_name)
 
     cctc.extend(fire)
-    print(len(cctc))
-    write_transformed_file(cctc)
+    random.shuffle(cctc)
+
+    total_length = len(cctc)
+
+    train_size = int(total_length * 0.9)
+    train_set = cctc[:train_size]
+    test_set = cctc[train_size:]
+
+    write_transformed_file(cctc, "total_data.json")
+    write_transformed_file(train_set, "train_data.json")
+    write_transformed_file(test_set, "test_data.json")
+
+    print(total_length)
+    print("Training set size:", len(train_set))
+    print("Testing set size:", len(test_set))
+
