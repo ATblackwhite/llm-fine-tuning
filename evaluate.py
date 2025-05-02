@@ -7,7 +7,6 @@ from modelscope import AutoModelForCausalLM, AutoTokenizer
 from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
 from rouge import Rouge
 from bert_score import score
-import datasets
 import argparse
 import os
 
@@ -177,24 +176,31 @@ def evaluate_model(model_path, test_data, metrics=None, output_file=None):
     return results
 
 
-def format_test_file(test_data, format_test_file):
+def format_test_file(test_file, format_test_file):
     if format_test_file:
         formatted_data = []
-        for item in test_data:
-            message_user = {
-                "role": "user",
-                "content": item["instruction"] + "\n" + item["input"]
-            }
-            message_assistant = {
-                "role": "assistant",
-                "content": item["output"]
-            }
-            formatted_item = {
-                "messages": [message_user, message_assistant]
-            }
-            formatted_data.append(formatted_item)
+        with open(test_file, 'r', encoding='utf-8') as file:
+            test_data = json.load(file)
+            for item in test_data:
+                message_user = {
+                    "role": "user",
+                    "content": item["instruction"] + "\n" + item["input"]
+                }
+                message_assistant = {
+                    "role": "assistant",
+                    "content": item["output"]
+                }
+                formatted_item = {
+                    "messages": [message_user, message_assistant]
+                }
+                formatted_data.append(formatted_item)
         return formatted_data
     else:
+        test_data = []
+        with open(test_file, "r", encoding="utf-8") as f:
+            for line in f:
+                item = json.loads(line.strip())
+                test_data.append(item)
         return test_data
 
 def main():
@@ -211,13 +217,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     # 加载测试数据
-    test_data = []
-    with open(args.test_file, "r", encoding="utf-8") as f:
-        for line in f:
-            item = json.loads(line.strip())
-            test_data.append(item)
-
-    test_data = format_test_file(test_data, args.format_test_file)
+    test_data = format_test_file(args.test_file, args.format_test_file)
 
     # 评估每个模型
     all_results = {}
